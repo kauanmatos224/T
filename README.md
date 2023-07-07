@@ -1,6 +1,7 @@
 # Thoth Invoicer
 
 Thoth Invoicer is a powerful web application built with Vue.js, Node.js, and Firebase that simplifies the process of creating and managing invoices for your business. It provides a user-friendly interface for generating professional invoices, tracking payments, and organizing client information. With Thoth Invoicer, you can streamline your invoicing workflow and save valuable time.
+![Thoth](thoth.jpeg)
 
 ## Features
 
