@@ -1,22 +1,46 @@
 <template>
   <div>
-    <div class="app-flex">
+    <div v-if="!mobile" class="app flex flex-column">
       <Navigation />
       <div class="app-content flex flex-column">
         <router-view />
       </div>
-
+    </div>
+    <div v-else class="mobile-message flex flex-column">
+      <h2>Sorry, this app is not supported on Mobile Devices!</h2>
+      <p>To use this app, please use computer or tablet</p>
     </div>
   </div>
 </template>
 
 <script>
 import Navigation from "./components/Navigation";
-export default{
+export default {
+  data() {
+    return {
+      mobile: null,
+    };
+  },
   components: {
     Navigation,
   },
-}
+  created() {
+    this.checkScreen();
+    window.addEventListener("resize", this.checkScreen);
+  },
+
+  methods: {
+    checkScreen() {
+      const windowWidth = window.innerWidth;
+      if (windowWidth <= 750) {
+        this.mobile = true;
+        return;
+      }
+
+      this.mobile = false;
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -39,6 +63,35 @@ button,
   font-size: 12px;
   margin-right: 8px;
   color: #fff;
+}
+
+.app {
+  background-color: black;
+  min-height: 100vh;
+
+  @media (min-width: 900px) {
+    flex-direction: row !important;
+  }
+
+  .app-content {
+    padding: 0 20px;
+    flex: 1;
+    position: relative;
+  }
+}
+
+.mobile-message{
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+  color: #fff;
+
+
+  p{
+    margin-top: 16px;
+  }
 }
 
 .dark-purple {
@@ -97,6 +150,7 @@ button,
     border-radius: 50%;
     margin-right: 8px;
   }
+
   font-size: 12px;
   margin-right: 30px;
   align-items: center;
@@ -108,6 +162,7 @@ button,
   &::before {
     background-color: #33d69f;
   }
+
   color: #33d69f;
   background-color: rgba(51, 214, 160, 0.1);
 }
@@ -116,6 +171,7 @@ button,
   &::before {
     background-color: #ff8f00;
   }
+
   color: #ff8f00;
   background-color: rgba(255, 145, 0, 0.1);
 }
@@ -124,6 +180,7 @@ button,
   &::before {
     background-color: #dfe3fa;
   }
+
   color: #dfe3fa;
   background-color: rgba(223, 227, 250, 0.1);
 }
