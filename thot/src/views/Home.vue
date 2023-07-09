@@ -35,7 +35,7 @@ export default {
   name: "Home",
   data() {
     return {
-      filterMenu: true,
+      filterMenu: false,
     };
   },
   components: {},
