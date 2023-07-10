@@ -3,11 +3,14 @@
     <div v-if="!mobile" class="app flex flex-column">
       <Navigation />
       <div class="app-content flex flex-column">
-        <InvoiceModal v-if="invoiceModal"/>
+        <trasition name="invoice">
+          <InvoiceModal v-if="invoiceModal"/>
+
+        </trasition>
         <router-view />
       </div>
     </div>
-    <div v-else class="mobile-message flex flex-column">
+    <div v-else class="age flex flex-column">
       <h2>Sorry, this app is not supported on Mobile Devices!</h2>
       <p>To use this app, please use computer or tablet</p>
     </div>
@@ -88,7 +91,7 @@ button,
   }
 }
 
-.mobile-message{
+.age{
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -100,6 +103,17 @@ button,
   p{
     margin-top: 16px;
   }
+}
+
+// animated invoice
+.invoice-enter-active,
+.invoice-leave-active {
+  transition:  0.8s ease all;
+}
+
+.invoice-enter-from,
+.invoice-leave-to {
+  transform: translateX(-700px);
 }
 
 .dark-purple {
