@@ -1,6 +1,7 @@
 <template>
     <div @click="checkClick" ref="invoiceWrap" class="invoice-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="invoice-content">
+            <Loading v-show="loading"/>
             <h1>New Invoice</h1>
 
             <!-- Bill From -->
@@ -111,9 +112,8 @@
                     <button type="button" @click="closeInvoice" class="red">Cancel</button>
                 </div>
                 <div class="right flex">
-                    <button v-if="!editInvoice" type="submit" @click="saveDraft" class="dark-purple">Save Draft</button>
-                    <button v-if="!editInvoice" type="submit" @click="publishInvoice" class="purple">Create Invoice</button>
-                    <button v-if="editInvoice" type="sumbit" class="purple">Update Invoice</button>
+                    <button type="submit" @click="saveDraft" class="dark-purple">Save Draft</button>
+                    <button type="submit" @click="publishInvoice" class="purple">Create Invoice</button>
                 </div>
             </div>
 
@@ -125,7 +125,9 @@
 import { mapMutations } from 'vuex';
 import { uid } from 'uid';
 import db from '../firebase/firebaseInit';
+import Loading from '../components/Loading'
 export default {
+    name:"invoiceModal",
     data() {
         return {
             dateOptions: { year: "numeric", month: "short", day: "numeric" },
@@ -154,6 +156,10 @@ export default {
         };
     },
 
+    components:{
+        Loading,
+    },
+
     created() {
         // get current date for invoice date field
         if (!this.editInvoice) {
@@ -163,7 +169,13 @@ export default {
     },
 
     methods: {
-        ...mapMutations(['TOGGLE_INVOICE']),
+        ...mapMutations(['TOGGLE_INVOICE', 'TOGGLE_MODAL']),
+
+        checkClick(e){
+            if (e.target === this.$refs.invoiceWrap) {
+                this.TOGGLE_MODAL(); 
+            }
+        },
 
 
         closeInvoice() {
@@ -206,6 +218,8 @@ export default {
                 return;
             }
 
+            this.loading = true;
+
 
             this.calInvoiceTotal();
 
@@ -235,6 +249,7 @@ export default {
                 invoiceDraft: this.invoiceDraft,
                 invoicePaid: null,
             });
+            this.loading = false;
 
 
             this.TOGGLE_INVOICE();
@@ -262,7 +277,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    width: 40%;
+    width: 100%;
     height: 100vh;
     overflow: scroll;
 
